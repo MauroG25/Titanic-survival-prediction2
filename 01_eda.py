@@ -26,3 +26,23 @@ for i, v in enumerate(df.isnull().sum()):
         ax.text(v + 0.5, i, str(v), fontweight="bold", va="center")
 plt.tight_layout()
 plt.show()
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+#count plot
+
+survived_counts = df["Survived"].value_counts()
+axes[0].bar(["Did Not Survive", "Survived"], survived_counts.values, color=["#3498db", "#e74c3c"])
+axes[0].set_title("Survival Count")
+axes[0].set_ylabel("Count")
+for i, v in enumerate(survived_counts.values):
+    axes[0].text(i, v + 1, str(v), fontweight="bold", ha="center")
+
+axes[1].pie(survived_counts.values, labels=["Did Not Survive", "Survived"], autopct="%1.1f%%", colors=["#3498db", "#e74c3c"], startangle=90, explode=(0.01, 0.01))
+axes[1].set_title("Survival Distribution")
+plt.suptitle("Titanic Dataset", fontsize=14, fontweight="bold")
+plt.tight_layout()  
+plt.show()
+
+print(f"\nSurvival Rate: {df['Survived'].mean() * 100:.2f}%")
+print(f"Death Rate: {(1 - df['Survived'].mean()) * 100:.2f}%")
