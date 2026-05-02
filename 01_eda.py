@@ -46,3 +46,20 @@ plt.show()
 
 print(f"\nSurvival Rate: {df['Survived'].mean() * 100:.2f}%")
 print(f"Death Rate: {(1 - df['Survived'].mean()) * 100:.2f}%")
+
+Numeric_cols = ["Age", "Fare", "SibSp", "Parch"]
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+axes = axes.flatten()
+for i, col in enumerate(Numeric_cols):
+    axes[i].hist(df[col].dropna(), bins=30, color="#3498db", edgecolor="black")
+    axes[i].axvline(df[col].mean(), color="red", linestyle="dashed", linewidth=1)
+    axes[i].axvline(df[col].median(), color="green", linestyle="dashed", linewidth=1)
+    axes[i].set_title(f"{col} Distribution")
+    axes[i].set_xlabel(col)
+    axes[i].set_ylabel("Frequency")
+    axes[i].legend(["Mean", "Median"])
+
+plt.suptitle("Numeric Feature Distributions", fontsize=14, fontweight="bold")
+plt.tight_layout()
+plt.show()
