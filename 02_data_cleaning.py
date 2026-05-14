@@ -68,3 +68,35 @@ print(df["Title"].value_counts())
 
 print(df.groupby("Title")["Survived"].mean().sort_values(ascending=False))
 
+df["FamilySize"] = df["SibSp"] + df["Parch"] + 1
+
+df["IsAlone"] = (df["FamilySize"] == 1).astype(int)
+
+print(df["IsAlone"].sum())
+print(f"Proportion of passengers who were alone: {df['IsAlone'].mean():.1%}")
+print(f"Survival rate for passengers who were alone: {df.groupby('IsAlone')['Survived'].mean().iloc[1]:.1%}")
+print(f"Survival rate for passengers who were alone: {df.groupby('IsAlone')['Survived'].mean().iloc[0]:.1%}")
+
+
+df["AgeGroup"] = pd.cut(df["Age"], bins=[0, 12, 18, 35, 60, 80], labels=["Child", "Teen", "Adult", "Senior", "Elderly"])
+
+print(df["AgeGroup"].value_counts().sort_index())
+
+print(df.groupby("AgeGroup")["Survived"].mean().sort_index())
+
+df["FareBin"] = pd.qcut(df["Fare"], q=4, labels=["Low", "Medium", "High", "Very High"])
+print(df["FareBin"].value_counts().sort_index())
+print(df.groupby("FareBin")["Survived"].mean().sort_index())
+
+## Encoding categorical variables
+
+print(df.dtypes)
+print(df.shape)
+
+df["Sex"] = df["Sex"].map({"male": 0, "female": 1})
+
+# One-hot encode Embarked, Title, AgeGroup, FareBin
+df = pd.get_dummies(df, columns=["Embarked", "Title", "AgeGroup", "FareBin"], drop_first=True, dtype=int)
+
+print(df.shape)
+print(df.head())
